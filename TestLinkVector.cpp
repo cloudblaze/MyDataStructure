@@ -17,7 +17,7 @@ do \
 #define APPEND(linkVector, item) \
 do \
 { \
-	linkVector.Append(item); \
+	linkVector.AppendLast(item); \
 	std::cout << "After append " << (item) << ", now " << #linkVector << ": " << linkVector << std::endl; \
 } while (false)
 
@@ -101,6 +101,12 @@ void TestLinkVector()
 	REMOVE(linkVector3, 0);
 	REMOVE(linkVector3, -1);
 	REMOVE(linkVector3, 0);
+
+	for(int i = 0; i < 10; i++)
+	{
+		INSERT(linkVector3, 0, i * 4 + 1);
+	}
+	std::cout << "linkVector3[" << 3  << "] is " << linkVector3[3] << std::endl;
 
 #ifdef DEBUG_INFO
     std::cout << "Info of linkVector3: ";

@@ -1,9 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <vector>
 #include <stdexcept>
 #include <iostream>
+#include "LinkVector.h"
 
 namespace hy
 {
@@ -11,15 +11,18 @@ namespace hy
 	class Stack
 	{
 	private:
-		std::vector<T> _Containor;
-		int _Capacity;
-		int _Top;
+		LinkVector<T> _Containor;
 	
 	public:
-		Stack(int capacity = 32);
-		bool IsEmpty() const;
+		Stack();
+		Stack(const Stack<T> & stack);
+		Stack<T> & operator=(const Stack<T> & stack);
+		~Stack();
+
 		void Push(const T & item);
 		T Pop();
+
+		bool IsEmpty() const;
 		T Top() const;
 
 		template<typename Type>
@@ -27,53 +30,63 @@ namespace hy
 	};
 
 	template<typename T>
-	Stack<T>::Stack(int capacity)
+	Stack<T>::Stack()
 	{
-		if(capacity <= 0)
-			throw std::invalid_argument("栈空间初始大小设置不允许小于等于0");
-
-		_Containor.resize(capacity);
-		_Capacity = capacity;
-		_Top = -1;
+		
 	}
 
 	template<typename T>
-	bool Stack<T>::IsEmpty() const
+	Stack<T>::Stack(const Stack<T> & stack)
 	{
-		return _Top == -1;
+		_Containor = stack->_Containor;
+	}
+
+	template<typename T>
+	Stack<T> & Stack<T>::operator=(const Stack<T> & stack)
+	{
+		_Containor = stack->_Containor;
+	}
+
+	template<typename T>
+	Stack<T>::~Stack()
+	{
+
 	}
 
 	template<typename T>
 	void Stack<T>::Push(const T & item)
 	{
-		_Containor[++_Top] = item;
+		_Containor.AppendLast(item);
 	}
 
 	template<typename T>
 	T Stack<T>::Pop()
 	{
-		if(_Top < 0)
+		if(_Containor.IsEmpty())
 			throw std::logic_error("对空栈执行Pop操作");
 		
-		return std::move(_Containor[_Top--]);
+		T result = _Containor.At(-1);
+		_Containor.RemoveLast();
+		return std::move(result);
+	}
+
+	template<typename T>
+	bool Stack<T>::IsEmpty() const
+	{
+		return _Containor.IsEmpty();
 	}
 
 	template<typename T>
 	T Stack<T>::Top() const
 	{
-		return _Containor[_Top];
+		T result = _Containor.At(-1);
+		return std::move(result);
 	}
 
 	template<typename T>
 	std::ostream & operator<<(std::ostream & os, const Stack<T> & stack)
 	{
-		os << "[ ";
-		for(int i = 0; i <= stack._Top; i++)
-		{
-			os << stack._Containor[i] << " ";
-		}
-		os << "]";
-
+		os << stack._Containor;
 		return os;
 	}
 }

@@ -27,4 +27,4 @@ exec:
 	./main
 
 clean:
-	rm -f main *.o
+	rm -f main demo *.o

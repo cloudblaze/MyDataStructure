@@ -31,7 +31,7 @@ void TestStack()
 	try
 	{
 		std::cout << "Create stack: ";
-		hy::Stack<int> stack(1);
+		hy::Stack<int> stack;
 		std::cout << "OK" << std::endl;
 		
 		PUSH(1);

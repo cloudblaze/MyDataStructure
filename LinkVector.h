@@ -16,7 +16,7 @@ namespace hy
 
 		LinkVectorNode(const T & data = T());
 		LinkVectorNode(const LinkVectorNode & linkVectorNode);
-		LinkVectorNode & operator=(const LinkVectorNode & linkVectorNode);
+		LinkVectorNode<T> & operator=(const LinkVectorNode & linkVectorNode);
 		~LinkVectorNode();
 
 		template<typename Type>
@@ -93,18 +93,24 @@ namespace hy
 	public:
 		LinkVector();
 		LinkVector(const LinkVector<T> & linkVector);
-		LinkVector & operator=(const LinkVector<T> & linkVector);
+		LinkVector<T> & operator=(const LinkVector<T> & linkVector);
 		~LinkVector();
 
 		void Insert(int index, const T & item);
-		void Append(const T & item);
+		void AppendFirst(const T & item);
+		void AppendLast(const T & item);
 		void Remove(int index);
+		void RemoveFirst();
 		void RemoveLast();
 		void Clear();
 
 		T First() const;
 		T Last() const;
 		T At(int index) const;
+		bool IsEmpty() const;
+		int Count() const;
+
+		T & operator[](int index);
 
 		template<typename Type>
 		friend std::ostream & operator<<(std::ostream & os, const LinkVector<Type> & linkVector);
@@ -211,7 +217,13 @@ namespace hy
 	}
 
 	template<typename T>
-	void LinkVector<T>::Append(const T & item)
+	void LinkVector<T>::AppendFirst(const T & item)
+	{
+		Insert(0, item);
+	}
+
+	template<typename T>
+	void LinkVector<T>::AppendLast(const T & item)
 	{
 		Insert(_Count, item);
 	}
@@ -247,6 +259,12 @@ namespace hy
 		delete p;
 
 		_Count--;
+	}
+
+	template<typename T>
+	void LinkVector<T>::RemoveFirst()
+	{
+		Remove(0);
 	}
 
 	template<typename T>
@@ -327,6 +345,53 @@ namespace hy
 
 		T result = p->_Data;
 		return std::move(result);
+	}
+
+	template<typename T>
+	bool LinkVector<T>::IsEmpty() const
+	{
+		return _Count == 0;
+	}
+
+	template<typename T>
+	int LinkVector<T>::Count() const
+	{
+		return _Count;
+	}
+
+	template<typename T>
+	T & LinkVector<T>::operator[](int index)
+	{
+		if(_Count <= 0)
+		{
+			throw std::logic_error("该向量为空向量，不可执行At()操作。");
+		}
+
+		if(index >= _Count || index < _Count * -1)
+		{
+			throw std::out_of_range("参数index的有效范围是 [" + std::to_string(_Count * -1) + ", " + std::to_string(_Count - 1) + "]");
+		}
+
+		LinkVectorNode<T> * p = nullptr;
+		if(index >= 0)
+		{
+			p = _Head->_Next;
+			for(int i = 0; i < index; i++)
+			{
+				p = p->_Next;
+			}
+		}
+		else
+		{
+			p = _Head;
+			for(int i = 0; i > index; i--)
+			{
+				p = p->_Prev;
+			}
+		}
+
+		T & result = p->_Data;
+		return result;
 	}
 
 	template<typename T>
