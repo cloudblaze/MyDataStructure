@@ -1,8 +1,10 @@
+DFLAGS	= -DDEBUG_INFO
+
 CXX			= g++
-CXXFLAGS	= -g -Wall -std=c++11
+CXXFLAGS	= -g -Wall -std=c++11 $(DFLAGS)
 LDFLAGS		= -lm
 
-MAKEFLAGS	= -Rr
+MAKEFLAGS	= -Rr -B
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $< -c -o $@
@@ -10,11 +12,19 @@ MAKEFLAGS	= -Rr
 %: %.o
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-all: main
+TestModules	= TestVector.o TestLinkVector.o TestStack.o
 
-main: main.o TestStack.o
+all: clear_screen main demo exec
 
-.PHONY: clean
+main: main.o $(TestModules)
+
+.PHONY: clear_screen exec clean
+
+clear_screen:
+	clear
+
+exec:
+	./main
 
 clean:
 	rm -f main *.o

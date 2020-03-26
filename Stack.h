@@ -19,8 +19,8 @@ namespace hy
 		Stack(int capacity = 32);
 		bool IsEmpty() const;
 		void Push(const T & item);
-		void Pop();
-		T & Top() const;
+		T Pop();
+		T Top() const;
 
 		template<typename Type>
 		friend std::ostream & operator<<(std::ostream & os, const Stack<Type> & stack);
@@ -29,6 +29,9 @@ namespace hy
 	template<typename T>
 	Stack<T>::Stack(int capacity)
 	{
+		if(capacity <= 0)
+			throw std::invalid_argument("栈空间初始大小设置不允许小于等于0");
+
 		_Containor.resize(capacity);
 		_Capacity = capacity;
 		_Top = -1;
@@ -47,16 +50,16 @@ namespace hy
 	}
 
 	template<typename T>
-	void Stack<T>::Pop()
+	T Stack<T>::Pop()
 	{
 		if(_Top < 0)
-			throw std::logic_error("再一次对栈执行Pop操作");
+			throw std::logic_error("对空栈执行Pop操作");
 		
-		_Top--;
+		return std::move(_Containor[_Top--]);
 	}
 
 	template<typename T>
-	T & Stack<T>::Top() const
+	T Stack<T>::Top() const
 	{
 		return _Containor[_Top];
 	}
