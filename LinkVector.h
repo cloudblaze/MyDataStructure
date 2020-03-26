@@ -151,7 +151,7 @@ namespace hy
 	template<typename T>
 	LinkVector<T> & LinkVector<T>::operator=(const LinkVector<T> & linkVector)
 	{
-		if(this == linkVector)
+		if(this == &linkVector)
 		{
 			return *this;
 		}

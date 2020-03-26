@@ -5,5 +5,6 @@ void TestVector();
 void TestLinkVectorNode();
 void TestLinkVector();
 void TestStack();
+void TestQueue();
 
 #endif

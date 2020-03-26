@@ -4,23 +4,20 @@
 #define PUSH(item) \
 do \
 { \
-	std::cout << "Push " << item << " into stack, and now: "; \
 	stack.Push(item); \
-	std::cout << stack << std::endl; \
+	std::cout << "Push " << item << " into stack, and now: " << stack << std::endl; \
 } while (false)
 
 #define POP() \
 do \
 { \
-	std::cout << "Pop the top item " << stack.Pop() << " from stack, and now: "; \
-	std::cout << stack << std::endl; \
+	std::cout << "Pop the top item " << stack.Pop() << " from stack, and now: " << stack << std::endl; \
 } while (false)
 
 #define TOP() \
 do \
 { \
-	std::cout << "Get the top item from stack: "; \
-	std::cout << stack.Top() << std::endl; \
+	std::cout << "Get the top item from stack: " << stack.Top() << std::endl; \
 } while (false);
 
 

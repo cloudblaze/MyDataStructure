@@ -20,6 +20,7 @@ int main()
 		TEST(TestLinkVectorNode);
 		TEST(TestLinkVector);
 		TEST(TestStack);
+		TEST(TestQueue);
 	}
 	catch(const std::exception& e)
 	{

@@ -12,7 +12,7 @@ MAKEFLAGS	= -Rr -B
 %: %.o
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-TestModules	= TestVector.o TestLinkVector.o TestStack.o
+TestModules	= TestVector.o TestLinkVector.o TestStack.o TestQueue.o
 
 all: clear_screen main demo exec
 

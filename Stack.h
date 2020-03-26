@@ -44,7 +44,13 @@ namespace hy
 	template<typename T>
 	Stack<T> & Stack<T>::operator=(const Stack<T> & stack)
 	{
+		if(this == &stack)
+		{
+			return *this;
+		}
+
 		_Containor = stack->_Containor;
+		return *this;
 	}
 
 	template<typename T>
@@ -65,7 +71,7 @@ namespace hy
 		if(_Containor.IsEmpty())
 			throw std::logic_error("对空栈执行Pop操作");
 		
-		T result = _Containor.At(-1);
+		T result = _Containor.Last();
 		_Containor.RemoveLast();
 		return std::move(result);
 	}
@@ -79,7 +85,7 @@ namespace hy
 	template<typename T>
 	T Stack<T>::Top() const
 	{
-		T result = _Containor.At(-1);
+		T result = _Containor.Last();
 		return std::move(result);
 	}
 
