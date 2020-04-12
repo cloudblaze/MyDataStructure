@@ -17,7 +17,6 @@ int main()
 	try
 	{
 		TEST(TestVector);
-		TEST(TestLinkVectorNode);
 		TEST(TestLinkVector);
 		TEST(TestStack);
 		TEST(TestQueue);

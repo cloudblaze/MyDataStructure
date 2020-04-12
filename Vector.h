@@ -11,7 +11,8 @@ namespace hy
 	class Vector
 	{
 	private:
-		T * _Data;
+		T * _data;
+		
 		int _Size;
 	
 	public:
@@ -42,15 +43,15 @@ namespace hy
 		}
 		
 		_Size = size;
-		_Data = new T[_Size];
+		_data = new T[_Size];
 	}
 
 	template<typename T>
 	Vector<T>::Vector(const Vector & vector)
 	{
 		_Size = vector._Size;
-		_Data = new T[_Size];
-		memcpy(_Data, vector._Data, sizeof(T) * _Size);
+		_data = new T[_Size];
+		memcpy(_data, vector._data, sizeof(T) * _Size);
 	}
 
 	template<typename T>
@@ -62,8 +63,8 @@ namespace hy
 		}
 
 		this->_Size = vector._Size;
-		this->_Data = new T[_Size];
-		memcpy(this->_Data, vector._Data, sizeof(T) * this->_Size);
+		this->_data = new T[_Size];
+		memcpy(this->_data, vector._data, sizeof(T) * this->_Size);
 
 		return *this;
 	}
@@ -71,16 +72,16 @@ namespace hy
 	template<typename T>
 	Vector<T>::~Vector()
 	{
-		delete [] _Data;
+		delete [] _data;
 	}
 
 	template<typename T>
 	void Vector<T>::Resize(int size)
 	{
 		T * newData = new T[size];
-		memcpy(newData, _Data, sizeof(T) * size);
-		delete [] _Data;
-		_Data = newData;
+		memcpy(newData, _data, sizeof(T) * size);
+		delete [] _data;
+		_data = newData;
 		_Size = size;
 	}
 
@@ -93,7 +94,7 @@ namespace hy
 	template<typename T>
 	T & Vector<T>::operator[](int index)
 	{
-		return _Data[index];
+		return _data[index];
 	}
 
 	template<typename Type>
@@ -102,7 +103,7 @@ namespace hy
 		os << "[ ";
 		for(int i = 0; i < vector._Size; i++)
 		{
-			os << vector._Data[i] << " ";
+			os << vector._data[i] << " ";
 		}
 		os << "]";
 
@@ -115,10 +116,10 @@ namespace hy
 	{
 		os << "{";
 		os << " _Size: " << _Size << ", ";
-		os << " _Data: [ ";
+		os << " _data: [ ";
 		for(int i = 0; i < _Size; i++)
 		{
-			os << _Data[i] << " ";
+			os << _data[i] << " ";
 		}
 		os << "]" << " ";
 		os << "}";

@@ -14,7 +14,7 @@ MAKEFLAGS	= -Rr -B
 
 TestModules	= TestVector.o TestLinkVector.o TestStack.o TestQueue.o
 
-all: clear_screen main demo exec
+all: clear_screen main demo maze exec
 
 main: main.o $(TestModules)
 

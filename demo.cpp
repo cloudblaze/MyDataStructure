@@ -4,6 +4,10 @@ using namespace std;
 
 int main()
 {
-    cout << double() << endl;
-    return 0;
+	string str;
+	cin >> str;
+	int num = -1;
+	num = stoi(str);
+	cout << "num: " << num << endl;
+	return 0;
 }

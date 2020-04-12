@@ -1,8 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-void TestVector(); 
-void TestLinkVectorNode();
+void TestVector();
 void TestLinkVector();
 void TestStack();
 void TestQueue();

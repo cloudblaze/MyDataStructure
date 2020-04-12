@@ -43,24 +43,6 @@ do \
 	std::cout << "Item of " << #linkVector << " at " << index << " is [" << linkVector.At(index) << "]." << std::endl; \
 } while (false)
 
-
-void TestLinkVectorNode()
-{
-	hy::LinkVectorNode<int> linkVectorNode1(5);
-	CREATE(linkVectorNode1);
-	hy::LinkVectorNode<int> linkVectorNode2(linkVectorNode1);
-	CREATE(linkVectorNode2);
-	hy::LinkVectorNode<int> linkVectorNode3 = linkVectorNode2;
-	CREATE(linkVectorNode3);
-
-	std::cout << "Now, linkVectorNode3: " << linkVectorNode3 << std::endl;
-
-#ifdef DEBUG_INFO
-    std::cout << "Info of linkVectorNode3(" << &linkVectorNode3 << "): ";
-    linkVectorNode3.PrintInfo(std::cout) << std::endl;
-#endif
-}
-
 void TestLinkVector()
 {
 	hy::LinkVector<int> linkVector1;
