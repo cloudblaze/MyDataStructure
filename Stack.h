@@ -11,7 +11,7 @@ namespace hy
 	class Stack
 	{
 	private:
-		LinkVector<T> _Containor;
+		LinkVector<T> _containor;
 	
 	public:
 		Stack();
@@ -38,7 +38,7 @@ namespace hy
 	template<typename T>
 	Stack<T>::Stack(const Stack<T> & stack)
 	{
-		_Containor = stack->_Containor;
+		_containor = stack->_containor;
 	}
 
 	template<typename T>
@@ -49,7 +49,7 @@ namespace hy
 			return *this;
 		}
 
-		_Containor = stack->_Containor;
+		_containor = stack->_containor;
 		return *this;
 	}
 
@@ -62,37 +62,37 @@ namespace hy
 	template<typename T>
 	void Stack<T>::Push(const T & item)
 	{
-		_Containor.AppendLast(item);
+		_containor.AppendLast(item);
 	}
 
 	template<typename T>
 	T Stack<T>::Pop()
 	{
-		if(_Containor.IsEmpty())
+		if(_containor.IsEmpty())
 			throw std::logic_error("对空栈执行Pop操作");
 		
-		T result = _Containor.Last();
-		_Containor.RemoveLast();
+		T result = _containor.Last();
+		_containor.RemoveLast();
 		return std::move(result);
 	}
 
 	template<typename T>
 	bool Stack<T>::IsEmpty() const
 	{
-		return _Containor.IsEmpty();
+		return _containor.IsEmpty();
 	}
 
 	template<typename T>
 	T Stack<T>::Top() const
 	{
-		T result = _Containor.Last();
+		T result = _containor.Last();
 		return std::move(result);
 	}
 
 	template<typename T>
 	std::ostream & operator<<(std::ostream & os, const Stack<T> & stack)
 	{
-		os << stack._Containor;
+		os << stack._containor;
 		return os;
 	}
 }
