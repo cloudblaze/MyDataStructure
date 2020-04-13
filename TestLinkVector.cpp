@@ -1,47 +1,47 @@
 #include <iostream>
 #include "LinkVector.h"
 
-#define CREATE(linkVectorNode) \
-do \
-{ \
-	std::cout << "Created " << #linkVectorNode << std::endl; \
-} while (false)
+#define CREATE(linkVectorNode)                                   \
+	do                                                           \
+	{                                                            \
+		std::cout << "Created " << #linkVectorNode << std::endl; \
+	} while (false)
 
-#define INSERT(linkVector, index, item) \
-do \
-{ \
-	linkVector.Insert(index, item); \
-	std::cout << "After insert " << (item) << " at index " << index << ", now " << #linkVector << ": " << linkVector << std::endl; \
-} while (false)
+#define INSERT(linkVector, index, item)                                                                                                \
+	do                                                                                                                                 \
+	{                                                                                                                                  \
+		linkVector.Insert(index, item);                                                                                                \
+		std::cout << "After insert " << (item) << " at index " << index << ", now " << #linkVector << ": " << linkVector << std::endl; \
+	} while (false)
 
-#define APPEND(linkVector, item) \
-do \
-{ \
-	linkVector.AppendLast(item); \
-	std::cout << "After append " << (item) << ", now " << #linkVector << ": " << linkVector << std::endl; \
-} while (false)
+#define APPEND(linkVector, item)                                                                              \
+	do                                                                                                        \
+	{                                                                                                         \
+		linkVector.AppendLast(item);                                                                          \
+		std::cout << "After append " << (item) << ", now " << #linkVector << ": " << linkVector << std::endl; \
+	} while (false)
 
-#define REMOVE(linkVector, index) \
-do \
-{ \
-	int lastValue = linkVector.At(index); \
-	linkVector.Remove(index); \
-	std::cout << "After Remove item of " << #linkVector << " at " << index << "(" << lastValue << "), now " << #linkVector << ": " << linkVector << std::endl; \
-} while (false)
+#define REMOVE(linkVector, index)                                                                                                                                  \
+	do                                                                                                                                                             \
+	{                                                                                                                                                              \
+		int lastValue = linkVector.At(index);                                                                                                                      \
+		linkVector.Remove(index);                                                                                                                                  \
+		std::cout << "After Remove item of " << #linkVector << " at " << index << "(" << lastValue << "), now " << #linkVector << ": " << linkVector << std::endl; \
+	} while (false)
 
-#define REMOVE_LAST(linkVector) \
-do \
-{ \
-	int lastValue = linkVector.Last(); \
-	linkVector.RemoveLast(); \
-	std::cout << "After Remove last item of " << #linkVector << "(" << lastValue << "), now " << #linkVector << ": " << linkVector << std::endl; \
-} while (false)
+#define REMOVE_LAST(linkVector)                                                                                                                      \
+	do                                                                                                                                               \
+	{                                                                                                                                                \
+		int lastValue = linkVector.Last();                                                                                                           \
+		linkVector.RemoveLast();                                                                                                                     \
+		std::cout << "After Remove last item of " << #linkVector << "(" << lastValue << "), now " << #linkVector << ": " << linkVector << std::endl; \
+	} while (false)
 
-#define AT(linkVector, index) \
-do \
-{ \
-	std::cout << "Item of " << #linkVector << " at " << index << " is [" << linkVector.At(index) << "]." << std::endl; \
-} while (false)
+#define AT(linkVector, index)                                                                                              \
+	do                                                                                                                     \
+	{                                                                                                                      \
+		std::cout << "Item of " << #linkVector << " at " << index << " is [" << linkVector.At(index) << "]." << std::endl; \
+	} while (false)
 
 void TestLinkVector()
 {
@@ -51,24 +51,24 @@ void TestLinkVector()
 
 	std::cout << "Now, linkVector3: " << linkVector3 << std::endl;
 
-	for(int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		APPEND(linkVector3, i * 2 + 1);
 	}
 
 	std::cout << "First item of linkVector3: " << linkVector3.First() << std::endl;
 
-	for(int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		REMOVE_LAST(linkVector3);
 	}
 
-	for(int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		INSERT(linkVector3, 0, i * 3 + 1);
 	}
 
-	for(int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		AT(linkVector3, i);
 	}
@@ -84,14 +84,19 @@ void TestLinkVector()
 	REMOVE(linkVector3, -1);
 	REMOVE(linkVector3, 0);
 
-	for(int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		INSERT(linkVector3, 0, i * 4 + 1);
 	}
-	std::cout << "linkVector3[" << 3  << "] is " << linkVector3[3] << std::endl;
+	std::cout << "linkVector3[" << 3 << "] is " << linkVector3[3] << std::endl;
+
+	std::cout << "linkVector3 is " << (!linkVector3.IsContains(0) ? "not " : "")
+			  << "contains " << 0 << std::endl;
+	std::cout << "linkVector3 is " << (!linkVector3.IsContains(1) ? "not " : "")
+			  << "contains " << 1 << std::endl;
 
 #ifdef DEBUG_INFO
-    std::cout << "Info of linkVector3: ";
-    linkVector3.PrintInfo(std::cout) << std::endl;
+	std::cout << "Info of linkVector3: ";
+	linkVector3.PrintInfo(std::cout) << std::endl;
 #endif
 }

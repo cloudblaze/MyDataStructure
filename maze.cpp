@@ -4,9 +4,9 @@
 #include <iostream>
 #include <random>
 
-#include "Stack.h"
+#include "Deque.h"
 
-enum Direction
+typedef enum Direction
 {
 	Center,
 	West,
@@ -16,8 +16,9 @@ enum Direction
 	NorthWest,
 	NorthEast,
 	SouthWest,
-	SouthEast
-};
+	SouthEast,
+	DirectionCount
+} Direction;
 
 struct Position
 {
@@ -30,15 +31,15 @@ struct Position
 		Y = y;
 	}
 
-	Position(const Position & position)
+	Position(const Position &position)
 	{
 		X = position.X;
 		Y = position.Y;
 	}
 
-	Position & operator=(const Position & position)
+	Position &operator=(const Position &position)
 	{
-		if(&position == this)
+		if (&position == this)
 		{
 			return *this;
 		}
@@ -49,10 +50,19 @@ struct Position
 
 	~Position()
 	{
-
 	}
 
-	friend std::ostream & operator<<(std::ostream & os, const Position & position)
+	bool operator==(const Position &position) const
+	{
+		if (X == position.X && Y == position.Y)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	friend std::ostream &operator<<(std::ostream &os, const Position &position)
 	{
 		os << "(" << position.X << ", " << position.Y << ")";
 		return os;
@@ -70,14 +80,14 @@ public:
 		_Position = Position(x, y);
 	}
 
-	Point(const Point & point)
+	Point(const Point &point)
 	{
 		_Position = point._Position;
 	}
 
-	Point & operator=(const Point & point)
+	Point &operator=(const Point &point)
 	{
-		if(&point == this)
+		if (&point == this)
 		{
 			return *this;
 		}
@@ -88,10 +98,9 @@ public:
 
 	~Point()
 	{
-
 	}
 
-	void Move(enum Direction direction)
+	void Move(Direction direction)
 	{
 		int newX = _Position.X;
 		int newY = _Position.Y;
@@ -150,7 +159,7 @@ bool GetRowAndColCount(int &rows, int &cols)
 		std::string input;
 
 		std::cout << "请输入迷宫行数("
-			 << "1~" << MaxRowCount << "): ";
+				  << "1~" << MaxRowCount << "): ";
 		std::cin >> input;
 		rows = stoi(input);
 		if (rows == 0 || rows > MaxRowCount)
@@ -159,7 +168,7 @@ bool GetRowAndColCount(int &rows, int &cols)
 		}
 
 		std::cout << "请输入迷宫列数("
-			 << "1~" << MaxColCount << "): ";
+				  << "1~" << MaxColCount << "): ";
 		std::cin >> input;
 		cols = stoi(input);
 		if (cols == 0 || cols > MaxColCount)
@@ -175,18 +184,33 @@ bool GetRowAndColCount(int &rows, int &cols)
 	return true;
 }
 
-int *GenerateMaze(int rows, int cols)
+bool *GenerateMaze(int rows, int cols)
 {
 	int *maze = new int[rows * cols];
 	int *tempMaze = new int[(rows + 2) * (cols + 2)];
-	Point point;
-	hy::Stack<Position> stack;
+	Point point = Point(1, 1);
+	hy::Deque<Position> deque;
 	std::default_random_engine random;
 
 	memset(maze, 0, sizeof(int) * rows * cols);
 	memset(maze, 0, sizeof(int) * (rows + 2) * (cols + 2));
-	
-	
+
+	for (int i = 0; i < cols + 2; i++)
+		*(tempMaze + i) = 1;
+	for (int i = 0; i < cols + 2; i++)
+		*(tempMaze + cols * (rows + 1) + i) = 1;
+	for (int i = 0; i < rows + 2; i++)
+		*(tempMaze + (cols + 2) * i) = 1;
+	for (int i = 0; i < rows + 2; i++)
+		*(tempMaze + (cols + 2) * i + cols + 1) = 1;
+
+	do
+	{
+		Point tempPoint = point;
+		Direction randomDirection = (Direction)(random() % DirectionCount);
+		tempPoint.Move(randomDirection);
+		if(*(tempMaze + (cols + 2) * tempPoint.GetPosition().X + tempPoint.GetPosition().Y) == )
+	} while (point.GetPosition() == Position(rows, cols));
 
 	for (int i = 0; i < rows; i++)
 	{

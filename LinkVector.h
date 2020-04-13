@@ -9,25 +9,25 @@ namespace hy
 template <typename T>
 class LinkVector
 {
-	class LinkVectorNode
+	struct LinkVectorNode
 	{
 	public:
-		LinkVectorNode *_Prev;
-		LinkVectorNode *_Next;
-		T _Data;
+		LinkVectorNode *Prev;
+		LinkVectorNode *Next;
+		T Data;
 
 		LinkVectorNode(const T &data = T())
 		{
-			_Prev = this;
-			_Next = this;
-			_Data = data;
+			Prev = this;
+			Next = this;
+			Data = data;
 		}
 
 		LinkVectorNode(const LinkVectorNode &linkVectorNode)
 		{
-			_Prev = this;
-			_Next = this;
-			_Data = linkVectorNode._Data;
+			Prev = this;
+			Next = this;
+			Data = linkVectorNode.Data;
 		}
 
 		LinkVectorNode &operator=(const LinkVectorNode &linkVectorNode)
@@ -37,9 +37,9 @@ class LinkVector
 				return *this;
 			}
 
-			_Prev = this;
-			_Next = this;
-			_Data = linkVectorNode._Data;
+			Prev = this;
+			Next = this;
+			Data = linkVectorNode.Data;
 		}
 
 		~LinkVectorNode()
@@ -48,7 +48,7 @@ class LinkVector
 
 		friend std::ostream &operator<<(std::ostream &os, const LinkVectorNode &linkVectorNode)
 		{
-			os << linkVectorNode._Data;
+			os << linkVectorNode.Data;
 			return os;
 		}
 
@@ -56,9 +56,9 @@ class LinkVector
 		std::ostream &PrintInfo(std::ostream &os) const
 		{
 			os << "{";
-			os << " _Prev: " << _Prev << ", ";
-			os << " _Next: " << _Next << ", ";
-			os << " _Data: " << _Data;
+			os << " Prev: " << Prev << ", ";
+			os << " Next: " << Next << ", ";
+			os << " Data: " << Data;
 			os << " }";
 
 			return os;
@@ -89,6 +89,7 @@ public:
 	T At(int index) const;
 	bool IsEmpty() const;
 	int Count() const;
+	bool IsContains(const T item) const;
 
 	T &operator[](int index);
 
@@ -96,11 +97,11 @@ public:
 	friend std::ostream &operator<<(std::ostream &os, const LinkVector<Type> &linkVector)
 	{
 		os << "[ ";
-		LinkVectorNode *p = linkVector._Head->_Next;
+		LinkVectorNode *p = linkVector._Head->Next;
 		while (p != linkVector._Head)
 		{
 			os << *p << " ";
-			p = p->_Next;
+			p = p->Next;
 		}
 		os << "]";
 
@@ -116,27 +117,27 @@ template <typename T>
 LinkVector<T>::LinkVector()
 {
 	_Head = new LinkVectorNode;
-	_Head->_Prev = _Head;
-	_Head->_Next = _Head;
+	_Head->Prev = _Head;
+	_Head->Next = _Head;
 	_Count = 0;
 }
 
 template <typename T>
 LinkVector<T>::LinkVector(const LinkVector<T> &linkVector)
 {
-	LinkVectorNode *p = linkVector._Head->_Next;
+	LinkVectorNode *p = linkVector._Head->Next;
 	_Head = new LinkVectorNode;
 	LinkVectorNode *q = _Head;
 	while (p != linkVector._Head)
 	{
-		q->_Next = new LinkVectorNode();
-		q->_Next->_Prev = q;
-		q->_Next->_Data = p->_Data;
+		q->Next = new LinkVectorNode();
+		q->Next->Prev = q;
+		q->Next->Data = p->Data;
 
-		q = q->_Next;
-		p = p->_Next;
+		q = q->Next;
+		p = p->Next;
 	}
-	_Head->_Prev = q;
+	_Head->Prev = q;
 	_Count = linkVector._Count;
 }
 
@@ -148,19 +149,19 @@ LinkVector<T> &LinkVector<T>::operator=(const LinkVector<T> &linkVector)
 		return *this;
 	}
 
-	LinkVectorNode *p = linkVector._Head->_Next;
+	LinkVectorNode *p = linkVector._Head->Next;
 	_Head = new LinkVectorNode;
 	LinkVectorNode *q = _Head;
 	while (p != linkVector._Head)
 	{
-		q->_Next = new LinkVectorNode();
-		q->_Next->_Prev = q;
-		q->_Next->_Data = p->_Data;
+		q->Next = new LinkVectorNode();
+		q->Next->Prev = q;
+		q->Next->Data = p->Data;
 
-		q = q->_Next;
-		p = p->_Next;
+		q = q->Next;
+		p = p->Next;
 	}
-	_Head->_Prev = q;
+	_Head->Prev = q;
 	_Count = linkVector._Count;
 
 	return *this;
@@ -169,11 +170,11 @@ LinkVector<T> &LinkVector<T>::operator=(const LinkVector<T> &linkVector)
 template <typename T>
 LinkVector<T>::~LinkVector()
 {
-	LinkVectorNode *p = _Head->_Next;
+	LinkVectorNode *p = _Head->Next;
 	LinkVectorNode *q = nullptr;
 	while (p != _Head)
 	{
-		q = p->_Next;
+		q = p->Next;
 		delete p;
 		p = q;
 	}
@@ -188,22 +189,22 @@ void LinkVector<T>::Insert(int index, const T &item)
 	{
 		for (int i = 0; i < index; i++)
 		{
-			p = p->_Next;
+			p = p->Next;
 		}
 	}
 	else
 	{
 		for (int i = 0; i > index; i--)
 		{
-			p = p->_Prev;
+			p = p->Prev;
 		}
 	}
 
 	LinkVectorNode *newLinkVectorNode = new LinkVectorNode(item);
-	newLinkVectorNode->_Prev = p;
-	newLinkVectorNode->_Next = p->_Next;
-	p->_Next->_Prev = newLinkVectorNode;
-	p->_Next = newLinkVectorNode;
+	newLinkVectorNode->Prev = p;
+	newLinkVectorNode->Next = p->Next;
+	p->Next->Prev = newLinkVectorNode;
+	p->Next = newLinkVectorNode;
 
 	_Count++;
 }
@@ -231,10 +232,10 @@ void LinkVector<T>::Remove(int index)
 	LinkVectorNode *p = nullptr;
 	if (index >= 0)
 	{
-		p = _Head->_Next;
+		p = _Head->Next;
 		for (int i = 0; i < index; i++)
 		{
-			p = p->_Next;
+			p = p->Next;
 		}
 	}
 	else
@@ -242,12 +243,12 @@ void LinkVector<T>::Remove(int index)
 		p = _Head;
 		for (int i = 0; i > index; i--)
 		{
-			p = p->_Prev;
+			p = p->Prev;
 		}
 	}
 
-	p->_Prev->_Next = p->_Next;
-	p->_Next->_Prev = p->_Prev;
+	p->Prev->Next = p->Next;
+	p->Next->Prev = p->Prev;
 	delete p;
 
 	_Count--;
@@ -268,16 +269,16 @@ void LinkVector<T>::RemoveLast()
 template <typename T>
 void LinkVector<T>::Clear()
 {
-	LinkVectorNode *p = _Head->_Next;
+	LinkVectorNode *p = _Head->Next;
 	LinkVectorNode *q = nullptr;
 	while (p != _Head)
 	{
-		q = p->_Next;
+		q = p->Next;
 		delete p;
 		p = q;
 	}
 
-	_Head->_Prev = _Head->_Next;
+	_Head->Prev = _Head->Next;
 }
 
 template <typename T>
@@ -288,7 +289,7 @@ T LinkVector<T>::First() const
 		throw std::logic_error("该向量为空向量，不可执行First()操作。");
 	}
 
-	T result = _Head->_Next->_Data;
+	T result = _Head->Next->Data;
 	return std::move(result);
 }
 
@@ -300,7 +301,7 @@ T LinkVector<T>::Last() const
 		throw std::logic_error("该向量为空向量，不可执行Last()操作。");
 	}
 
-	T result = _Head->_Prev->_Data;
+	T result = _Head->Prev->Data;
 	return std::move(result);
 }
 
@@ -320,10 +321,10 @@ T LinkVector<T>::At(int index) const
 	LinkVectorNode *p = nullptr;
 	if (index >= 0)
 	{
-		p = _Head->_Next;
+		p = _Head->Next;
 		for (int i = 0; i < index; i++)
 		{
-			p = p->_Next;
+			p = p->Next;
 		}
 	}
 	else
@@ -331,11 +332,11 @@ T LinkVector<T>::At(int index) const
 		p = _Head;
 		for (int i = 0; i > index; i--)
 		{
-			p = p->_Prev;
+			p = p->Prev;
 		}
 	}
 
-	T result = p->_Data;
+	T result = p->Data;
 	return std::move(result);
 }
 
@@ -349,6 +350,23 @@ template <typename T>
 int LinkVector<T>::Count() const
 {
 	return _Count;
+}
+
+template <typename T>
+bool LinkVector<T>::IsContains(const T item) const
+{
+	LinkVectorNode *p = _Head->Next;
+	while (p != _Head)
+	{
+		if(p->Data == item)
+		{
+			return true;
+		}
+		
+		p = p->Next;
+	}
+
+	return false;
 }
 
 template <typename T>
@@ -367,10 +385,10 @@ T &LinkVector<T>::operator[](int index)
 	LinkVectorNode *p = nullptr;
 	if (index >= 0)
 	{
-		p = _Head->_Next;
+		p = _Head->Next;
 		for (int i = 0; i < index; i++)
 		{
-			p = p->_Next;
+			p = p->Next;
 		}
 	}
 	else
@@ -378,11 +396,11 @@ T &LinkVector<T>::operator[](int index)
 		p = _Head;
 		for (int i = 0; i > index; i--)
 		{
-			p = p->_Prev;
+			p = p->Prev;
 		}
 	}
 
-	T &result = p->_Data;
+	T &result = p->Data;
 	return result;
 }
 
@@ -394,11 +412,11 @@ std::ostream &LinkVector<T>::PrintInfo(std::ostream &os) const
 	os << " _Head(" << _Head << "): ";
 	_Head->PrintInfo(os);
 	os << " -- [ ";
-	LinkVectorNode *p = _Head->_Next;
+	LinkVectorNode *p = _Head->Next;
 	while (p != _Head)
 	{
 		os << *p << " ";
-		p = p->_Next;
+		p = p->Next;
 	}
 	os << "]";
 	os << ", _Count: " << _Count;
